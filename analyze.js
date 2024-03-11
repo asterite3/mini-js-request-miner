@@ -22,7 +22,6 @@ function evalExpr(node, scope) {
         }
         break;        
     }
-    // тут наши полномочия всё (окончены)
     return UNKNOWN_VALUE;
 }
 function setVariable(varNode, valueNode, scope) {
@@ -75,4 +74,17 @@ function analyze(code) {
     });
 }
 
+function runOnLocalJSFile() {
+    const fs = require('fs');
+
+    const inputFile = process.argv.length >= 3 ? process.argv[2] : 'sample.js';
+
+    const code = fs.readFileSync(inputFile, 'utf8');
+    analyze(code);
+}
+
+// this is to allow both importing this file and running it
 module.exports.analyze = analyze;
+if (require.main === module) {
+    runOnLocalJSFile();
+}
